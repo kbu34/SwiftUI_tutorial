@@ -64,6 +64,7 @@ struct ContentView: View {
                     }
                     
                     Text(converted, format: .number)
+                        .foregroundStyle(converted.isZero ? .red : .primary)
                 }
             }
             .navigationTitle("Converter")
