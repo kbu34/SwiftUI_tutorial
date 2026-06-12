@@ -16,6 +16,8 @@ struct ContentView: View {
     @State private var errorMessage = ""
     @State private var showingError = false
     
+    @State private var score = 0
+    
     var body: some View {
         NavigationStack {
             List {
@@ -41,6 +43,10 @@ struct ContentView: View {
             } message: {
                 Text(errorMessage)
             }
+            .toolbar {
+                Text("Score: \(score)")
+                Button("Start Over", action: startGame)
+            }
         }
     }
     
@@ -63,6 +69,17 @@ struct ContentView: View {
             return
         }
         
+        guard isNotShort(word: answer) else {
+            wordError(title: "Word too short", message: "Try again!")
+            return
+        }
+        
+        guard isDifferent(word: answer) else {
+            wordError(title: "Same as root word", message: "That's just the root word!")
+            return
+        }
+        score += answer.count
+        
         withAnimation {
             usedWords.insert(answer, at: 0)
         }
@@ -70,6 +87,7 @@ struct ContentView: View {
     }
     
     func startGame() {
+        score = 0
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt") {
             if let startWords = try? String(contentsOf: startWordsURL, encoding: .utf8) {
                 let allWords = startWords.components(separatedBy: "\n")
@@ -103,6 +121,14 @@ struct ContentView: View {
         let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
         
         return misspelledRange.location == NSNotFound
+    }
+    
+    func isNotShort(word: String) -> Bool {
+        !(word.count < 3)
+    }
+    
+    func isDifferent(word: String) -> Bool {
+        word != rootWord
     }
     
     func wordError(title: String, message: String) {
