@@ -28,6 +28,10 @@ struct ContentView: View {
     @State private var message = ""
     @State private var gameCount = 0
     @State private var gameEnded = false
+    
+    @State private var flagSpinAnimationAmounts = [0.0, 0.0, 0.0]
+    @State private var flagOpacityAmounts = [0.0, 0.0, 0.0]
+    
     let GAME_END_SCORE = 8
     
     var body: some View {
@@ -54,9 +58,21 @@ struct ContentView: View {
                     ForEach(0..<3) { number in
                         Button {
                             flagTapped(number)
+                            withAnimation(.spring) {
+                                for index in 0..<3 {
+                                    if index != number {
+                                        flagOpacityAmounts[index] = 0.75
+                                    } else {
+                                        flagSpinAnimationAmounts[number] += 360
+                                    }
+                                }
+                            }
                         } label: {
                             FlagImage(country: countries[number])
                         }
+                        .rotation3DEffect(.degrees(flagSpinAnimationAmounts[number]), axis: (x: 0, y: 1, z: 0))
+                        .opacity(1 - flagOpacityAmounts[number])
+                        .scaleEffect(1 - flagOpacityAmounts[number])
                     }
                 }
                 .frame(maxWidth: .infinity)
@@ -108,6 +124,7 @@ struct ContentView: View {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        flagOpacityAmounts = [0, 0, 0]
     }
     
     func newGame() {
