@@ -40,22 +40,29 @@ struct ContentView: View {
     @State private var expenses = Expenses()
     @State private var showingAddExpense = false
     
+    private let types = ["Business", "Personal"]
+    
     var body: some View {
         NavigationStack {
             List {
-                ForEach(expenses.items) { item in
-                    HStack {
-                        VStack(alignment: .leading) {
-                            Text(item.name)
-                                .font(.headline)
-                            Text(item.type)
+                ForEach(types, id: \.self) { type in
+                    Section {
+                        ForEach(expensesFilter(type)) { item in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    Text(item.name)
+                                        .font(.headline)
+                                    Text(item.type)
+                                }
+                                
+                                Spacer()
+                                Text(item.amount, format: .currency(code: Locale.current.currency?.identifier ?? "NZD"))
+                                    .foregroundColor(item.amount < 10 ? .green : item.amount < 100 ? .yellow : .red)
+                            }
                         }
-                        
-                        Spacer()
-                        Text(item.amount, format: .currency(code: "USD"))
+                        .onDelete { IndexSet in removeItems(at: IndexSet, for: type)}
                     }
                 }
-                .onDelete(perform: removeItems)
             }
             .navigationTitle("iExpense")
             .toolbar {
@@ -69,8 +76,15 @@ struct ContentView: View {
         }
     }
     
-    func removeItems(at offsets: IndexSet) {
-        expenses.items.remove(atOffsets: offsets)
+    func removeItems(at offsets: IndexSet, for type: String) {
+        let chosenElement = expensesFilter(type)[offsets.first!]
+        let uuid = chosenElement.id
+        let index = expenses.items.firstIndex(where: { $0.id == uuid })!
+        expenses.items.remove(at: index)
+    }
+    
+    func expensesFilter(_ type: String) -> [ExpenseItem] {
+        expenses.items.filter { $0.type == type}
     }
 }
 
