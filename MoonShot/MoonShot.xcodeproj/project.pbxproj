@@ -6,8 +6,13 @@
 	objectVersion = 110;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		29C0914A308EB99200A5DB75 /* MissionListItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C09149308EB99200A5DB75 /* MissionListItemView.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		29ACCD9D305F498000414C7D /* MoonShot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoonShot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		29C09149308EB99200A5DB75 /* MissionListItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionListItemView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -31,6 +36,7 @@
 			isa = PBXGroup;
 			children = (
 				29ACCD9F305F498000414C7D /* MoonShot */,
+				29C09149308EB99200A5DB75 /* MissionListItemView.swift */,
 				29ACCD9E305F498000414C7D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -110,6 +116,7 @@
 		29ACCD99305F498000414C7D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			files = (
+				29C0914A308EB99200A5DB75 /* MissionListItemView.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */

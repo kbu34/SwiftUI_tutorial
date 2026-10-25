@@ -1,14 +1,9 @@
-//
-//  Mission.swift
-//  MoonShot
-//
 //  Created by Phillip Kim on 21/09/2026.
-//
 
 import Foundation
 
-struct Mission: Codable, Identifiable {
-    struct CrewRole: Codable {
+struct Mission: Codable, Identifiable, Hashable {
+    struct CrewRole: Codable, Hashable {
         let name: String
         let role: String
     }
@@ -30,3 +25,4 @@ struct Mission: Codable, Identifiable {
         launchDate?.formatted(date: .abbreviated, time: .omitted) ?? "N/A"
     }
 }
+
